@@ -9,7 +9,8 @@
 		"build": "npm run generate-pwa-assets && tsc && vite build --base=./",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
-		"generate-pwa-assets": "pwa-assets-generator --preset minimal public/logo.svg"
+		"generate-pwa-assets": "pwa-assets-generator --preset minimal public/logo.svg",
+		"deploy": "gh-pages -d dist"
 	},
 	"dependencies": {
 		"normalize.css": "^8.0.1",
@@ -33,6 +34,7 @@
 		"eslint-plugin-boundaries": "^4.2.1",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"eslint-plugin-react-refresh": "^0.4.6",
+		"gh-pages": "^6.2.0",
 		"prettier-eslint": "^16.3.0",
 		"sass": "^1.77.4",
 		"typescript": "^5.2.2",
