@@ -15,8 +15,7 @@
 	"dependencies": {
 		"normalize.css": "^8.0.1",
 		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"react-router-dom": "^7.1.1"
+		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
 		"@ianvs/prettier-plugin-sort-imports": "^4.2.1",
