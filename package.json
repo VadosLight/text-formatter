@@ -10,7 +10,7 @@
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
 		"generate-pwa-assets": "pwa-assets-generator --preset minimal public/logo.svg",
-		"deploy": "gh-pages -d dist"
+		"deploy": "npm run build && gh-pages -d dist"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.14.0",
