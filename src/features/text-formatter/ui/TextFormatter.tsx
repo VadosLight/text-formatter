@@ -11,13 +11,15 @@ import { useFormatter } from "../hooks/useFormatter"
 const checkboxList = [
 	{ name: "predlog", label: "Неразрывные пробелы предлогов" },
 	{ name: "numbers", label: "Неразрывные пробелы числительных" },
-	{ name: "trim", label: "Убрать повторяющиеся пробелы" },
+	{ name: "trim", label: "Убрать висячие пробелы" },
+	{ name: "innerSpaces", label: "Убрать повторяющиеся пробелы" },
 ] as const
 
 const defaultCheckboxes: FormatterParams = {
 	numbers: true,
 	predlog: true,
 	trim: true,
+	innerSpaces: true,
 }
 
 export const TextFormatter = () => {
