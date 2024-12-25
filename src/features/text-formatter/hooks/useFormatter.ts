@@ -1,4 +1,5 @@
 import { replaceHangingPrepositions } from "../lib/replaceHangingPrepositions"
+import { replaceMultipleSpaces } from "../lib/replaceMultipleSpaces"
 import { replaceSpacesInNumbers } from "../lib/replaceSpacesInNumbers"
 import { trimSpaces } from "../lib/trimSpaces"
 
@@ -6,6 +7,7 @@ export type FormatterParams = Partial<{
 	predlog: boolean
 	numbers: boolean
 	trim: boolean
+	innerSpaces: boolean
 }>
 
 export const useFormatter = (initialText: string, params?: FormatterParams) => {
@@ -13,6 +15,10 @@ export const useFormatter = (initialText: string, params?: FormatterParams) => {
 
 	if (params?.trim) {
 		result = trimSpaces(result)
+	}
+
+	if (params?.innerSpaces) {
+		result = replaceMultipleSpaces(result)
 	}
 
 	if (params?.predlog) {
