@@ -1,0 +1,45 @@
+/* MainLayout.module.css */
+.main-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Занимает всю высоту viewport */
+  }
+  
+  .header {
+    background-color: #4c7caf;
+    color: white;
+    padding: 8px 16px;
+    text-align: left;
+  }
+  
+  .content-wrapper {
+    display: grid;
+    grid-template-columns: 200px 1fr; /* Sidebar занимает 200px, остальное - Outline */
+    flex-grow: 1; /* Растягивается на оставшуюся высоту */
+  }
+  
+  .sidebar {
+    background-color: #f4f4f4;
+    border-right: 1px solid #ddd;
+    padding: 1rem;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar li {
+    padding: 0.5rem 0;
+    cursor: pointer;
+  }
+  
+  .sidebar li:hover {
+    color: #4c7caf;
+  }
+  
+  .outline {
+    padding: 1rem;
+    background-color: #ffffff;
+  }

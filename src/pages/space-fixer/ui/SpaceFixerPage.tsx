@@ -1,8 +1,8 @@
 import { TextFormatter } from "@features/text-formatter"
 
-import styles from "./HomePage.module.scss"
+import styles from "./SpaceFixerPage.module.scss"
 
-const HomePage = () => {
+const SpaceFixerPage = () => {
 	return (
 		<div className={styles.page}>
 			<TextFormatter />
@@ -10,4 +10,4 @@ const HomePage = () => {
 	)
 }
 
-export default HomePage
+export default SpaceFixerPage
