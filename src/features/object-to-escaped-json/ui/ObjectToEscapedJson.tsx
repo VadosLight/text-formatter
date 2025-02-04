@@ -32,10 +32,11 @@ export const ObjectToEscapedJson = () => {
 				const unescaped = debouncedInput.replace(/\\"/g, '"')
 				// Парсим строку как JSON
 				const obj = JSON.parse(unescaped)
-				// Выводим объект в виде minified JSON
-				const result = JSON.stringify(obj)
+				// Выводим объект в виде отформатированного JSON с отступами 2 пробела
+				const result = JSON.stringify(obj, null, 2)
 				setOutputText(result)
 			}
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			setOutputText("Ошибка: " + error.message)
 		}
