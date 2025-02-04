@@ -34,14 +34,14 @@ const Sidebar = () => {
 							navigate("/text-formatter/space-fixer")
 						}}
 					>
-						Профиль
+						Настройка неразрывных отступов
 					</li>
 					<li
 						onClick={() => {
 							navigate("/text-formatter/prepare-json")
 						}}
 					>
-						Настройки
+						Конвертер SDUI шаблона
 					</li>
 				</ul>
 			</nav>
