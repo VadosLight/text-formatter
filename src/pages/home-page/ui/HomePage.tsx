@@ -1,9 +1,9 @@
-import styles from "./HomePage.module.scss"
+import { PageWrapper } from "@shared/ui/PageWrapper/PageWrapper"
 
 const HomePage = () => {
 	// const nav = useNavigate()
 
-	return <div className={styles.page}>Главная страничка</div>
+	return <PageWrapper>Главная страничка</PageWrapper>
 }
 
 export default HomePage

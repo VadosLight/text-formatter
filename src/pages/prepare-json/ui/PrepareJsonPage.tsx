@@ -1,7 +1,12 @@
-import styles from "./PrepareJsonPage.module.scss"
+import { ObjectToEscapedJson } from "@features/object-to-escaped-json"
+import { PageWrapper } from "@shared/ui/PageWrapper/PageWrapper"
 
 const PrepareJsonPage = () => {
-	return <div className={styles.page}>Пока не реализовал</div>
+	return (
+		<PageWrapper>
+			<ObjectToEscapedJson />
+		</PageWrapper>
+	)
 }
 
 export default PrepareJsonPage

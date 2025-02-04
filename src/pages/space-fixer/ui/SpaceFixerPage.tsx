@@ -1,12 +1,11 @@
 import { TextFormatter } from "@features/text-formatter"
-
-import styles from "./SpaceFixerPage.module.scss"
+import { PageWrapper } from "@shared/ui/PageWrapper/PageWrapper"
 
 const SpaceFixerPage = () => {
 	return (
-		<div className={styles.page}>
+		<PageWrapper>
 			<TextFormatter />
-		</div>
+		</PageWrapper>
 	)
 }
 
