@@ -86,6 +86,7 @@ export const ObjectToEscapedJson = () => {
 					multiline
 					fullWidth
 					minRows={10}
+					maxRows={20}
 					label={
 						direction === "object-to-json"
 							? "JS объект"
@@ -98,6 +99,7 @@ export const ObjectToEscapedJson = () => {
 
 			{/* Поле для результата */}
 			<Box
+				maxHeight={500}
 				sx={{
 					backgroundColor: "AppWorkspace",
 					padding: 1,
@@ -109,6 +111,7 @@ export const ObjectToEscapedJson = () => {
 					multiline
 					fullWidth
 					minRows={10}
+					maxRows={20}
 					label={
 						direction === "object-to-json"
 							? "JSON с экранированными кавычками"

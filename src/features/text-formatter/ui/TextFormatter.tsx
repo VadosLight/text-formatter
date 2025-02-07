@@ -45,6 +45,7 @@ export const TextFormatter = () => {
 				display: "flex",
 				flexDirection: "column",
 				gap: 4,
+				width: "100%",
 			}}
 		>
 			<Box
@@ -79,20 +80,25 @@ export const TextFormatter = () => {
 					padding: 1,
 					gap: 1,
 					display: "flex",
+					flexWrap: "wrap",
 				}}
 			>
 				<TextField
+					fullWidth
 					multiline
 					label="Ваш текст"
 					minRows={10}
+					maxRows={20}
 					value={initialText}
 					defaultValue={initialText}
 					onChange={(e) => setInitialText(e.currentTarget.value)}
 				/>
 				<TextField
+					fullWidth
 					multiline
 					label="Результат"
 					minRows={10}
+					maxRows={20}
 					value={resultText}
 				/>
 			</Box>

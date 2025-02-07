@@ -11,7 +11,7 @@ import styles from "./MainLayout.module.css" // Импорт модульных 
 
 // Базовый компонент MainLayout
 export const MainLayout = () => {
-	const [isSidebarOpen, setSidebarOpen] = useState(true)
+	const [isSidebarOpen, setSidebarOpen] = useState(false)
 	const navigate = useNavigate() // Используем useNavigate для управления навигацией
 
 	const handleBack = () => {
