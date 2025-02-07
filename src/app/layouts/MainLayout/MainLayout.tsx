@@ -1,23 +1,17 @@
 // MainLayout.js
+import { useState } from "react"
 import { Outlet, useNavigate } from "react-router-dom"
 
 import { Button } from "@mui/material"
 
+import { Header } from "@widgets/header"
 import { Sidebar } from "@widgets/sidebar"
 
 import styles from "./MainLayout.module.css" // Импорт модульных стилей
 
-// Компонент Header
-const Header = () => {
-	return (
-		<header className={styles.header}>
-			<h1>Форматтер текста</h1>
-		</header>
-	)
-}
-
 // Базовый компонент MainLayout
 export const MainLayout = () => {
+	const [isSidebarOpen, setSidebarOpen] = useState(true)
 	const navigate = useNavigate() // Используем useNavigate для управления навигацией
 
 	const handleBack = () => {
@@ -27,11 +21,18 @@ export const MainLayout = () => {
 	return (
 		<div className={styles["main-layout"]}>
 			{/* Header */}
-			<Header />
+			<Header onMenuClick={() => setSidebarOpen((p) => !p)} />
 
 			{/* Wrapper для Sidebar и Outline */}
 			<div className={styles["content-wrapper"]}>
-				<Sidebar />
+				<Sidebar
+					open={isSidebarOpen}
+					onClose={() => {
+						if (isSidebarOpen) {
+							setSidebarOpen(false)
+						}
+					}}
+				/>
 
 				{/* Outline (основной контент) - используем Outlet */}
 				<main className={styles.outline}>

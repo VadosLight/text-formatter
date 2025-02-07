@@ -43,32 +43,10 @@ export const TextFormatter = () => {
 				borderRadius: 1,
 				padding: 2,
 				display: "flex",
+				flexDirection: "column",
 				gap: 4,
 			}}
 		>
-			<Box
-				sx={{
-					backgroundColor: "AppWorkspace",
-					padding: 1,
-					gap: 1,
-					display: "flex",
-				}}
-			>
-				<TextField
-					multiline
-					label="Ваш текст"
-					minRows={10}
-					value={initialText}
-					defaultValue={initialText}
-					onChange={(e) => setInitialText(e.currentTarget.value)}
-				/>
-				<TextField
-					multiline
-					label="Результат"
-					minRows={10}
-					value={resultText}
-				/>
-			</Box>
 			<Box
 				sx={{
 					backgroundColor: "AppWorkspace",
@@ -94,6 +72,29 @@ export const TextFormatter = () => {
 						)
 					})}
 				</FormGroup>
+			</Box>
+			<Box
+				sx={{
+					backgroundColor: "AppWorkspace",
+					padding: 1,
+					gap: 1,
+					display: "flex",
+				}}
+			>
+				<TextField
+					multiline
+					label="Ваш текст"
+					minRows={10}
+					value={initialText}
+					defaultValue={initialText}
+					onChange={(e) => setInitialText(e.currentTarget.value)}
+				/>
+				<TextField
+					multiline
+					label="Результат"
+					minRows={10}
+					value={resultText}
+				/>
 			</Box>
 		</Box>
 	)

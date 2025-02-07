@@ -1,16 +1,10 @@
 /* MainLayout.module.css */
 .main-layout {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   /* Занимает всю высоту viewport */
-}
-
-.header {
-  background-color: #4c7caf;
-  color: white;
-  padding: 8px 16px;
-  text-align: left;
 }
 
 .content-wrapper {
@@ -24,4 +18,10 @@
 .outline {
   padding: 1rem;
   background-color: #ffffff;
+}
+
+@media screen and (max-width: 768px) {
+  .content-wrapper {
+    display: block;
+  }
 }

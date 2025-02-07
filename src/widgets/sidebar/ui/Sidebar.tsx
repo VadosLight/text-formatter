@@ -1,4 +1,10 @@
+import { useRef } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+
+import clsx from "clsx"
+import { useOnClickOutside, useScrollLock } from "usehooks-ts"
+
+import { useAdaptiveWindows } from "@shared/index"
 
 import styles from "./Sidebar.module.css"
 
@@ -22,18 +28,35 @@ const menuItems: MenuItem[] = [
 	},
 ]
 
-export const Sidebar = () => {
+type SidebarProps = {
+	open: boolean
+	onClose: () => void
+}
+
+export const Sidebar = (props: SidebarProps) => {
+	const { open, onClose } = props
 	const navigate = useNavigate()
 	const location = useLocation()
+	const { isMobile } = useAdaptiveWindows()
+
+	const ref = useRef(null)
+	useOnClickOutside(ref, onClose)
+	useScrollLock({ autoLock: isMobile && open })
 
 	return (
-		<aside className={styles.sidebar}>
+		<aside
+			ref={ref}
+			className={clsx(styles.sidebar, {
+				[styles.open]: isMobile ? open : undefined,
+			})}
+		>
 			<nav>
 				<ul>
 					{menuItems.map((item) => (
 						<li
 							key={item.path}
 							onClick={() => {
+								onClose()
 								navigate(item.path)
 							}}
 							className={
