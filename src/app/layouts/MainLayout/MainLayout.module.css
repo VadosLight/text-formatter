@@ -9,7 +9,7 @@
 
 .content-wrapper {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: min(20%, 300px) 5fr;
   /* Sidebar занимает 200px, остальное - Outline */
   flex-grow: 1;
   /* Растягивается на оставшуюся высоту */
