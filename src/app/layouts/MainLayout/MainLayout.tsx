@@ -3,6 +3,8 @@ import { Outlet, useNavigate } from "react-router-dom"
 
 import { Button } from "@mui/material"
 
+import { Sidebar } from "@widgets/sidebar"
+
 import styles from "./MainLayout.module.css" // Импорт модульных стилей
 
 // Компонент Header
@@ -11,41 +13,6 @@ const Header = () => {
 		<header className={styles.header}>
 			<h1>Форматтер текста</h1>
 		</header>
-	)
-}
-
-// Компонент Sidebar
-const Sidebar = () => {
-	const navigate = useNavigate()
-
-	return (
-		<aside className={styles.sidebar}>
-			<nav>
-				<ul>
-					<li
-						onClick={() => {
-							navigate("/")
-						}}
-					>
-						Главная
-					</li>
-					<li
-						onClick={() => {
-							navigate("/text-formatter/space-fixer")
-						}}
-					>
-						Настройка неразрывных отступов
-					</li>
-					<li
-						onClick={() => {
-							navigate("/text-formatter/prepare-json")
-						}}
-					>
-						Конвертер SDUI шаблона
-					</li>
-				</ul>
-			</nav>
-		</aside>
 	)
 }
 
@@ -64,7 +31,6 @@ export const MainLayout = () => {
 
 			{/* Wrapper для Sidebar и Outline */}
 			<div className={styles["content-wrapper"]}>
-				{/* Sidebar */}
 				<Sidebar />
 
 				{/* Outline (основной контент) - используем Outlet */}
