@@ -10,14 +10,28 @@ export function replaceHangingPrepositions(text: string): string {
 	// Список коротких висячих предлогов
 	const prepositions = ["в", "на", "за", "о", "у", "с", "к", "и"]
 
+	// Сначала заменяем все виды пробельных символов на обычный пробел
+	const normalizedText = text
+		.replace(/[\t\n\r]+/g, " ")
+		.replace(/\s+/g, " ")
+		.trim()
+
 	// Разбиваем строку на массив слов
-	const words = text.split(" ")
+	const words = normalizedText.split(" ")
 	const result: string[] = []
 
 	for (let i = 0; i < words.length; i++) {
 		const currentWord = words[i]
 		// Приводим к нижнему регистру для сравнения
 		const lowerCased = currentWord.toLowerCase()
+
+		if (i > 0) {
+			// Если предыдущее слово не было предлогом, добавляем обычный пробел
+			const prevWordLower = words[i - 1].toLowerCase()
+			if (!prepositions.includes(prevWordLower)) {
+				result.push(" ")
+			}
+		}
 
 		// Если текущее слово — короткий предлог и впереди ещё есть слова
 		if (prepositions.includes(lowerCased) && i < words.length - 1) {
@@ -29,8 +43,8 @@ export function replaceHangingPrepositions(text: string): string {
 		}
 	}
 
-	// Объединяем обратно в строку
-	return result.join(" ").trim()
+	// Объединяем обратно в строку без дополнительных пробелов
+	return result.join("").trim()
 }
 
 // Пример использования

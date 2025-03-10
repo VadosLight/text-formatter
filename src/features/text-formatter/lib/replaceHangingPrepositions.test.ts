@@ -63,4 +63,59 @@ describe("replaceHangingPrepositions", () => {
 		expect(result.includes("к\u00A0")).toBe(true)
 		expect(result.includes("и\u00A0")).toBe(true)
 	})
+
+	describe("сложные случаи", () => {
+		it("должен корректно обрабатывать последовательные предлоги", () => {
+			const result = replaceHangingPrepositions("и в и на доме")
+			expect(containsNonBreakingSpace(result, 4)).toBe(true)
+			expect(result).toBe("и\u00A0в\u00A0и\u00A0на\u00A0доме")
+		})
+
+		it("должен обрабатывать предлоги с разным регистром", () => {
+			const result = replaceHangingPrepositions("В лесу И на ПОЛЯНЕ к дому")
+			expect(containsNonBreakingSpace(result, 4)).toBe(true)
+			expect(result).toBe("В\u00A0лесу И\u00A0на\u00A0ПОЛЯНЕ к\u00A0дому")
+		})
+
+		it("должен обрабатывать множественные пробелы", () => {
+			const result = replaceHangingPrepositions("дом    в    лесу")
+			expect(containsNonBreakingSpace(result, 1)).toBe(true)
+			expect(result).toBe("дом в\u00A0лесу")
+		})
+
+		it("должен корректно обрабатывать предлоги с пунктуацией", () => {
+			const result = replaceHangingPrepositions(
+				"пошел в лес, и на поляну, к реке",
+			)
+			expect(containsNonBreakingSpace(result, 4)).toBe(true)
+			expect(result).toBe(
+				"пошел в\u00A0лес, и\u00A0на\u00A0поляну, к\u00A0реке",
+			)
+		})
+
+		it("должен обрабатывать предлоги в начале и конце предложения", () => {
+			const result = replaceHangingPrepositions("в лесу живет и")
+			expect(containsNonBreakingSpace(result, 1)).toBe(true)
+			expect(result).toBe("в\u00A0лесу живет и")
+		})
+
+		it("должен корректно обрабатывать текст с цифрами", () => {
+			const result = replaceHangingPrepositions("в 2024 году и на 5 этаже")
+			expect(containsNonBreakingSpace(result, 3)).toBe(true)
+			expect(result).toBe("в\u00A02024 году и\u00A0на\u00A05 этаже")
+		})
+
+		it("должен обрабатывать предлоги рядом со знаками препинания", () => {
+			const result = replaceHangingPrepositions(
+				"идти: в лес, на поляну; к реке!",
+			)
+			expect(containsNonBreakingSpace(result, 3)).toBe(true)
+			expect(result).toBe("идти: в\u00A0лес, на\u00A0поляну; к\u00A0реке!")
+		})
+
+		it("должен обрабатывать специальные символы как пробелы", () => {
+			const result = replaceHangingPrepositions("в\tлесу\nи\tна\nполяне")
+			expect(result).toBe("в\u00A0лесу и\u00A0на\u00A0поляне")
+		})
+	})
 })
