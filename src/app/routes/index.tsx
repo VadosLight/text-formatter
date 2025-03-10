@@ -1,21 +1,34 @@
 /* eslint-disable react-refresh/only-export-components */
-import { lazy } from "react"
+import { lazy, Suspense } from "react"
 import { createBrowserRouter, Navigate } from "react-router-dom"
+
+import { Box, CircularProgress } from "@mui/material"
 
 import { MainLayout } from "../layouts/MainLayout/MainLayout"
 
-const HomePage = lazy(() => import("@pages/home-page/ui/HomePage"))
-const SpaceFixerPage = lazy(
-	() => import("@pages/space-fixer/ui/SpaceFixerPage"),
+const PageLoader = () => (
+	<Box
+		display="flex"
+		justifyContent="center"
+		alignItems="center"
+		minHeight="100vh"
+	>
+		<CircularProgress />
+	</Box>
 )
-const PrepareJsonPage = lazy(
-	() => import("@pages/prepare-json/ui/PrepareJsonPage"),
-)
+
+const HomePage = lazy(() => import("@pages/home-page"))
+const SpaceFixerPage = lazy(() => import("@pages/space-fixer"))
+const PrepareJsonPage = lazy(() => import("@pages/prepare-json"))
 
 export const router = createBrowserRouter([
 	{
 		path: "/text-formatter",
-		element: <MainLayout />,
+		element: (
+			<Suspense fallback={<PageLoader />}>
+				<MainLayout />
+			</Suspense>
+		),
 		children: [
 			{
 				index: true,

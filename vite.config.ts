@@ -47,6 +47,9 @@ export default defineConfig({
 		qrcode(), // only applies in dev mode
 	],
 	build: {
-		chunkSizeWarningLimit: 200,
+		chunkSizeWarningLimit: 300,
+		minify: "esbuild",
+		cssMinify: "esbuild",
+		rollupOptions: {},
 	},
 })

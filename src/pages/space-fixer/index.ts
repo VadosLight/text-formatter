@@ -1,3 +1,1 @@
-import SpaceFixerPage from "./ui/SpaceFixerPage"
-
-export { SpaceFixerPage }
+export { default } from "./ui/SpaceFixerPage"

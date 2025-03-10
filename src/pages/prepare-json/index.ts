@@ -1,3 +1,1 @@
-import PrepareJsonPage from "./ui/PrepareJsonPage"
-
-export { PrepareJsonPage }
+export { default } from "./ui/PrepareJsonPage"
