@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 
-import { FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material"
+import { MenuItem, Select, TextField } from "@mui/material"
 import Box from "@mui/material/Box"
 import { useDebounce } from "@uidotdev/usehooks"
+
+import { escapeJinjaJson, escapeJson, unescapeJson } from "../lib/json-escape"
 
 export const ObjectToEscapedJson = () => {
 	// Состояния для входного и выходного текста, а также для выбора направления операции.
@@ -10,7 +12,7 @@ export const ObjectToEscapedJson = () => {
 	const [outputText, setOutputText] = useState("")
 	// Режим: "object-to-json" или "json-to-object"
 	const [direction, setDirection] = useState("object-to-json")
-	const debouncedInput = useDebounce(inputText, 1500)
+	const debouncedInput = useDebounce(inputText, 1000)
 
 	useEffect(() => {
 		if (!debouncedInput.trim()) {
@@ -24,17 +26,16 @@ export const ObjectToEscapedJson = () => {
 				const obj = new Function("return " + debouncedInput)()
 				// Получаем minified JSON (без переносов строк)
 				const json = JSON.stringify(obj)
-				// Экранируем все двойные кавычки
-				const escapedJson = json.replace(/"/g, '\\"')
-				setOutputText(escapedJson)
+				setOutputText(escapeJson(json))
 			} else if (direction === "json-to-object") {
-				// Сначала заменяем экранированные кавычки на обычные.
-				const unescaped = debouncedInput.replace(/\\"/g, '"')
+				const unescaped = unescapeJson(debouncedInput)
 				// Парсим строку как JSON
 				const obj = JSON.parse(unescaped)
 				// Выводим объект в виде отформатированного JSON с отступами 2 пробела
 				const result = JSON.stringify(obj, null, 2)
 				setOutputText(result)
+			} else if (direction === "json-jinja-to-string") {
+				setOutputText(escapeJinjaJson(debouncedInput))
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
@@ -51,26 +52,26 @@ export const ObjectToEscapedJson = () => {
 				display: "flex",
 				flexDirection: "column",
 				gap: 2,
+				width: "100%",
 			}}
 		>
 			{/* Блок для выбора направления операции */}
 			<Box sx={{ display: "flex", alignItems: "center" }}>
-				<RadioGroup
-					row
+				<Select
 					value={direction}
 					onChange={(e) => setDirection(e.target.value)}
+					fullWidth
 				>
-					<FormControlLabel
-						value="object-to-json"
-						control={<Radio />}
-						label="JS объект → JSON с экранированными кавычками"
-					/>
-					<FormControlLabel
-						value="json-to-object"
-						control={<Radio />}
-						label="JSON с экранированными кавычками → JS объект"
-					/>
-				</RadioGroup>
+					<MenuItem value="object-to-json">
+						JS объект → JSON с экранированными кавычками
+					</MenuItem>
+					<MenuItem value="json-to-object">
+						JSON с экранированными кавычками → JS объект
+					</MenuItem>
+					<MenuItem value="json-jinja-to-string">
+						JSON со вставками Jinja → Строка с экранированными символами
+					</MenuItem>
+				</Select>
 			</Box>
 
 			{/* Поле для ввода */}
