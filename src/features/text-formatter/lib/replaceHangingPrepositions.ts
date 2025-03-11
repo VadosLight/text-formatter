@@ -6,45 +6,76 @@
  * @param text - Исходный текст
  * @returns Текст, в котором пробел после предлогов заменён на неразрывный
  */
-export function replaceHangingPrepositions(text: string): string {
-	// Список коротких висячих предлогов
-	const prepositions = ["в", "на", "за", "о", "у", "с", "к", "и"]
+export const replaceHangingPrepositions = (text: string): string => {
+	// Неразрывный пробел
+	const NBSP = " "
 
-	// Сначала заменяем все виды пробельных символов на обычный пробел
-	const normalizedText = text
-		.replace(/[\t\n\r]+/g, " ")
-		.replace(/\s+/g, " ")
-		.trim()
+	// Список предлогов для обработки
+	const prepositions = [
+		"в",
+		"без",
+		"до",
+		"из",
+		"к",
+		"на",
+		"по",
+		"о",
+		"от",
+		"перед",
+		"при",
+		"через",
+		"с",
+		"у",
+		"за",
+		"над",
+		"об",
+		"под",
+		"про",
+		"для",
+		"и",
+	]
 
-	// Разбиваем строку на массив слов
-	const words = normalizedText.split(" ")
-	const result: string[] = []
+	let result = ""
+	let i = 0
 
-	for (let i = 0; i < words.length; i++) {
-		const currentWord = words[i]
-		// Приводим к нижнему регистру для сравнения
-		const lowerCased = currentWord.toLowerCase()
+	while (i < text.length) {
+		// Проверяем, находимся ли мы в начале текста или после пробела
+		const isWordStart = i === 0 || text[i - 1] === " "
 
-		if (i > 0) {
-			// Если предыдущее слово не было предлогом, добавляем обычный пробел
-			const prevWordLower = words[i - 1].toLowerCase()
-			if (!prepositions.includes(prevWordLower)) {
-				result.push(" ")
+		if (isWordStart) {
+			// Проверяем каждый предлог
+			let foundPrep = false
+			for (const prep of prepositions) {
+				const currentWord = text.slice(i, i + prep.length).toLowerCase()
+				const nextChar = text[i + prep.length]
+
+				// Проверяем, что это предлог и после него пробел
+				if (currentWord === prep.toLowerCase() && nextChar === " ") {
+					// Проверяем, что после пробелов идет слово или конец строки
+					let j = i + prep.length + 1
+					while (j < text.length && text[j] === " ") j++
+
+					// Если после пробелов конец строки или начало нового слова
+					if (j === text.length || /\S/.test(text[j])) {
+						// Добавляем предлог в оригинальном регистре
+						result += text.slice(i, i + prep.length) + NBSP
+						i = j
+						foundPrep = true
+						break
+					}
+				}
 			}
-		}
-
-		// Если текущее слово — короткий предлог и впереди ещё есть слова
-		if (prepositions.includes(lowerCased) && i < words.length - 1) {
-			// Добавляем текущее слово с неразрывным пробелом
-			result.push(currentWord + "\u00A0")
+			if (!foundPrep) {
+				result += text[i]
+				i++
+			}
 		} else {
-			// Иначе просто добавляем текущее слово
-			result.push(currentWord)
+			result += text[i]
+			i++
 		}
 	}
 
-	// Объединяем обратно в строку без дополнительных пробелов
-	return result.join("").trim()
+	return result
 }
 
 // Пример использования
