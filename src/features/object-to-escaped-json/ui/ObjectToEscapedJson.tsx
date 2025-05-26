@@ -3,8 +3,9 @@ import { useEffect, useState } from "react"
 import { MenuItem, Select, TextField } from "@mui/material"
 import Box from "@mui/material/Box"
 import { useDebounce } from "@uidotdev/usehooks"
-
-import { escapeJinjaJson, escapeJson, unescapeJson } from "../lib/json-escape"
+import { escapeJson } from "../lib/escapeJson"
+import { unescapeJson } from "../lib/unescapeJson"
+import { escapeJinjaJson } from "../lib/escapeJinjaJson"
 
 export const ObjectToEscapedJson = () => {
 	// Состояния для входного и выходного текста, а также для выбора направления операции.

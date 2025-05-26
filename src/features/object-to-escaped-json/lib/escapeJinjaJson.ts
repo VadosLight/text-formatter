@@ -1,19 +1,6 @@
-export const escapeJson = (json: string): string => {
-	return json
-		.replace(/\r?\n/g, "")
-		.replace(/\t/g, "")
-		.replace(/\s+/g, " ")
-		.replace(/"\s+}/g, '"}')
-		.replace(/{\s+"/g, '{"')
-		.replace(/:\s+"/g, ': "')
-		.replace(/"\s+:/g, '":')
-		.replace(/"/g, '\\"')
-		.trim()
-}
 
-export const unescapeJson = (json: string): string => {
-	return json.replace(/\\"/g, '"').replace(/\\n/g, "\n")
-}
+
+
 
 export const escapeJinjaJson = (text: string): string => {
     let result = "";
