@@ -1,12 +1,9 @@
 export const escapeJson = (json: string): string => {
-	return json
-		.replace(/\r?\n/g, "")
-		.replace(/\t/g, "")
-		.replace(/\s+/g, " ")
-		.replace(/"\s+}/g, '"}')
-		.replace(/{\s+"/g, '{"')
-		.replace(/:\s+"/g, ': "')
-		.replace(/"\s+:/g, '":')
-		.replace(/"/g, '\\"')
-		.trim()
+	if (!json.trim()) {
+		return ""
+	}
+
+	const normalizedJson = JSON.stringify(JSON.parse(json)).replace(/":/g, '": ')
+
+	return normalizedJson.replace(/"/g, '\\"')
 }

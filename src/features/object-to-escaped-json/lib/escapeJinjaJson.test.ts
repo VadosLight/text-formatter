@@ -3,6 +3,10 @@ import { describe, expect, it } from "vitest"
 import { escapeJinjaJson } from "./escapeJinjaJson";
 
 describe("escapeJinjaJson", () => {
+    it("должен возвращать пустую строку без изменений", () => {
+        expect(escapeJinjaJson("")).toBe("")
+    });
+
     it("должен экранировать двойные кавычки", () => {
         expect(escapeJinjaJson('{"key": "value"}')).toBe(
             '{\\"key\\":\\"value\\"}'
@@ -39,6 +43,18 @@ describe("escapeJinjaJson", () => {
     it("должен удалять пробел, если за ним идет непробельный символ", () => {
         expect(escapeJinjaJson('{"key"    :"value"}')).toBe(
             '{\\"key\\":\\"value\\"}'
+        );
+    });
+
+    it("должен сохранять пробелы внутри кавычек", () => {
+        expect(escapeJinjaJson('{"key": "a   b"}')).toBe(
+            '{\\"key\\":\\"a   b\\"}'
+        );
+    });
+
+    it("должен корректно обрабатывать экранированные кавычки внутри значения", () => {
+        expect(escapeJinjaJson('{"key":"say \\"hello\\""}')).toBe(
+            '{\\"key\\":\\"say \\"hello\\"\\"}'
         );
     });
 });
