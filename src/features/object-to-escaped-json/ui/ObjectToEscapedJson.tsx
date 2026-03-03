@@ -4,15 +4,46 @@ import { MenuItem, Select, TextField } from "@mui/material"
 import Box from "@mui/material/Box"
 import { useDebounce } from "@uidotdev/usehooks"
 import { escapeJson } from "../lib/escapeJson"
-import { unescapeJson } from "../lib/unescapeJson"
 import { escapeJinjaJson } from "../lib/escapeJinjaJson"
+import { unescapeJinja } from "../lib/unescapeJinja"
+import { unescapeJson } from "../lib/unescapeJson"
+
+type Direction =
+	| "object-to-json"
+	| "json-to-object"
+	| "json-jinja-to-string"
+	| "string-jinja-to-json"
+
+type DirectionLabels = {
+	input: string
+	output: string
+}
+
+const DIRECTION_LABELS: Record<Direction, DirectionLabels> = {
+	"object-to-json": {
+		input: "JS объект",
+		output: "JSON с экранированными кавычками",
+	},
+	"json-to-object": {
+		input: "JSON с экранированными кавычками",
+		output: "JS объект",
+	},
+	"json-jinja-to-string": {
+		input: "JSON со вставками Jinja",
+		output: "Строка с экранированными символами",
+	},
+	"string-jinja-to-json": {
+		input: "Строка с экранированными символами + Jinja",
+		output: "JSON со вставками Jinja",
+	},
+}
 
 export const ObjectToEscapedJson = () => {
 	// Состояния для входного и выходного текста, а также для выбора направления операции.
 	const [inputText, setInputText] = useState("")
 	const [outputText, setOutputText] = useState("")
 	// Режим: "object-to-json" или "json-to-object"
-	const [direction, setDirection] = useState("object-to-json")
+	const [direction, setDirection] = useState<Direction>("object-to-json")
 	const debouncedInput = useDebounce(inputText, 1000)
 
 	useEffect(() => {
@@ -37,12 +68,15 @@ export const ObjectToEscapedJson = () => {
 				setOutputText(result)
 			} else if (direction === "json-jinja-to-string") {
 				setOutputText(escapeJinjaJson(debouncedInput))
+			} else if (direction === "string-jinja-to-json") {
+				setOutputText(unescapeJinja(debouncedInput))
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			setOutputText("Ошибка: " + error.message)
 		}
 	}, [debouncedInput, direction])
+	const directionLabels = DIRECTION_LABELS[direction]
 
 	return (
 		<Box
@@ -60,7 +94,7 @@ export const ObjectToEscapedJson = () => {
 			<Box sx={{ display: "flex", alignItems: "center" }}>
 				<Select
 					value={direction}
-					onChange={(e) => setDirection(e.target.value)}
+					onChange={(e) => setDirection(e.target.value as Direction)}
 					fullWidth
 				>
 					<MenuItem value="object-to-json">
@@ -71,6 +105,9 @@ export const ObjectToEscapedJson = () => {
 					</MenuItem>
 					<MenuItem value="json-jinja-to-string">
 						JSON со вставками Jinja → Строка с экранированными символами
+					</MenuItem>
+					<MenuItem value="string-jinja-to-json">
+						Строка с экранированными символами + Jinja → JSON
 					</MenuItem>
 				</Select>
 			</Box>
@@ -89,11 +126,7 @@ export const ObjectToEscapedJson = () => {
 					fullWidth
 					minRows={10}
 					maxRows={20}
-					label={
-						direction === "object-to-json"
-							? "JS объект"
-							: "JSON с экранированными кавычками"
-					}
+					label={directionLabels.input}
 					value={inputText}
 					onChange={(e) => setInputText(e.currentTarget.value)}
 				/>
@@ -114,11 +147,7 @@ export const ObjectToEscapedJson = () => {
 					fullWidth
 					minRows={10}
 					maxRows={20}
-					label={
-						direction === "object-to-json"
-							? "JSON с экранированными кавычками"
-							: "JS объект"
-					}
+					label={directionLabels.output}
 					value={outputText}
 					InputProps={{
 						readOnly: true,
