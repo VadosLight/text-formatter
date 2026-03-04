@@ -5,10 +5,12 @@ import Box from "@mui/material/Box"
 import { useDebounce } from "@uidotdev/usehooks"
 import { escapeJson } from "../lib/escapeJson"
 import { escapeJinjaJson } from "../lib/escapeJinjaJson"
+import { getValidJSON } from "../lib/getValidJSON"
 import { unescapeJinja } from "../lib/unescapeJinja"
 import { unescapeJson } from "../lib/unescapeJson"
 
 type Direction =
+	| "js-to-json"
 	| "object-to-json"
 	| "json-to-object"
 	| "json-jinja-to-string"
@@ -20,6 +22,10 @@ type DirectionLabels = {
 }
 
 const DIRECTION_LABELS: Record<Direction, DirectionLabels> = {
+	"js-to-json": {
+		input: "JS объект",
+		output: "JSON",
+	},
 	"object-to-json": {
 		input: "JS объект",
 		output: "JSON с экранированными кавычками",
@@ -53,7 +59,10 @@ export const ObjectToEscapedJson = () => {
 		}
 
 		try {
-			if (direction === "object-to-json") {
+			if (direction === "js-to-json") {
+				const obj = new Function("return " + debouncedInput)()
+				setOutputText(getValidJSON(obj))
+			} else if (direction === "object-to-json") {
 				// Пробуем выполнить введённую строку как JS-объект.
 				const obj = new Function("return " + debouncedInput)()
 				// Получаем minified JSON (без переносов строк)
@@ -97,6 +106,7 @@ export const ObjectToEscapedJson = () => {
 					onChange={(e) => setDirection(e.target.value as Direction)}
 					fullWidth
 				>
+					<MenuItem value="js-to-json">JS объект → JSON</MenuItem>
 					<MenuItem value="object-to-json">
 						JS объект → JSON с экранированными кавычками
 					</MenuItem>
