@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-import { MenuItem, Select, TextField } from "@mui/material"
+import { CircularProgress, InputAdornment, MenuItem, Select, TextField } from "@mui/material"
 import Box from "@mui/material/Box"
 import { useDebounce } from "@uidotdev/usehooks"
 import { escapeJson } from "../lib/escapeJson"
@@ -48,13 +48,19 @@ export const ObjectToEscapedJson = () => {
 	// Состояния для входного и выходного текста, а также для выбора направления операции.
 	const [inputText, setInputText] = useState("")
 	const [outputText, setOutputText] = useState("")
+	const [isLoading, setIsLoading] = useState(false)
 	// Режим: "object-to-json" или "json-to-object"
 	const [direction, setDirection] = useState<Direction>("object-to-json")
 	const debouncedInput = useDebounce(inputText, 1000)
 
 	useEffect(() => {
+		setIsLoading(Boolean(inputText.trim()))
+	}, [inputText, direction])
+
+	useEffect(() => {
 		if (!debouncedInput.trim()) {
 			setOutputText("")
+			setIsLoading(false)
 			return
 		}
 
@@ -80,9 +86,12 @@ export const ObjectToEscapedJson = () => {
 			} else if (direction === "string-jinja-to-json") {
 				setOutputText(unescapeJinja(debouncedInput))
 			}
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		} catch (error: any) {
-			setOutputText("Ошибка: " + error.message)
+		} catch (error: unknown) {
+			const errorMessage =
+				error instanceof Error ? error.message : "Неизвестная ошибка"
+			setOutputText("Ошибка: " + errorMessage)
+		} finally {
+			setIsLoading(false)
 		}
 	}, [debouncedInput, direction])
 	const directionLabels = DIRECTION_LABELS[direction]
@@ -161,6 +170,11 @@ export const ObjectToEscapedJson = () => {
 					value={outputText}
 					InputProps={{
 						readOnly: true,
+						endAdornment: isLoading ? (
+							<InputAdornment position="end">
+								<CircularProgress size={20} />
+							</InputAdornment>
+						) : undefined,
 					}}
 				/>
 			</Box>
